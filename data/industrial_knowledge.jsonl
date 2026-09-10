@@ -1,0 +1,20 @@
+{"chunk_id":"servo_e101","equipment":"ABB IRB6700","category":"servo","text":"E-101 表示伺服驱动器欠压故障。发生该故障时，应检查控制柜供电电压、电源模块以及伺服驱动器输入电压是否正常。"}
+{"chunk_id":"servo_e102","equipment":"ABB IRB6700","category":"servo","text":"E-102 表示伺服驱动器过载故障。发生该故障时，应检查机器人是否发生机械碰撞、当前负载是否超过额定范围以及伺服驱动器运行状态。"}
+{"chunk_id":"servo_e103","equipment":"ABB IRB6700","category":"servo","text":"E-103 表示伺服驱动器过温故障。发生该故障时，应检查控制柜散热情况、环境温度以及冷却风扇运行状态。"}
+{"chunk_id":"servo_e104","equipment":"ABB IRB6700","category":"servo","text":"E-104 表示伺服驱动器编码器通信异常。发生该故障时，应检查编码器连接线、接口松动情况以及伺服驱动器通信状态。"}
+{"chunk_id":"axis_1","equipment":"ABB IRB6700","category":"axis","text":"AXIS-1 表示机器人第一轴相关故障。发生故障时，应检查第一轴电机、编码器、减速器以及机械传动结构。"}
+{"chunk_id":"axis_2","equipment":"ABB IRB6700","category":"axis","text":"AXIS-2 表示机器人第二轴相关故障。发生故障时，应检查第二轴电机、编码器、制动器以及机械结构是否存在异常。"}
+{"chunk_id":"axis_4","equipment":"ABB IRB6700","category":"axis","text":"AXIS-4 表示机器人第四轴相关故障。发生故障时，应检查第四轴电机、编码器以及机械传动结构。"}
+{"chunk_id":"axis_6","equipment":"ABB IRB6700","category":"axis","text":"AXIS-6 表示机器人第六轴相关故障。发生故障时，应检查第六轴电机、编码器、末端负载以及传动部件。"}
+{"chunk_id":"cabinet_power","equipment":"ABB IRB6700","category":"control_cabinet","text":"控制柜无法启动时，应首先检查主电源是否正常、电源开关状态、急停按钮状态以及控制柜内部电源模块。"}
+{"chunk_id":"cabinet_cooling","equipment":"ABB IRB6700","category":"control_cabinet","text":"控制柜温度过高时，应检查散热风道是否堵塞、冷却风扇是否正常运行以及周围环境温度是否超过允许范围。"}
+{"chunk_id":"cabinet_emergency_stop","equipment":"ABB IRB6700","category":"control_cabinet","text":"机器人无法解除急停状态时，应检查急停按钮是否复位、安全回路是否正常以及控制柜安全模块是否存在报警。"}
+{"chunk_id":"lubrication_check","equipment":"ABB IRB6700","category":"lubrication","text":"机器人日常维护应按照维护周期检查各关节和减速器的润滑状态，并确认润滑部位不存在泄漏和明显污染。"}
+{"chunk_id":"lubrication_insufficient","equipment":"ABB IRB6700","category":"lubrication","text":"润滑不足可能导致机器人关节磨损增加、运行噪声增大以及关节温度升高。发现润滑不足时应停止高负载运行并检查润滑状态。"}
+{"chunk_id":"abnormal_noise","equipment":"ABB IRB6700","category":"mechanical","text":"机器人运行过程中出现异常噪声时，应检查减速器、轴承、机械连接结构以及润滑状态，并确认是否发生机械碰撞。"}
+{"chunk_id":"overload_operation","equipment":"ABB IRB6700","category":"operation","text":"机器人运行负荷超过额定范围时，应立即停止设备运行，卸除异常负载，并检查机械臂和末端执行器是否存在碰撞或卡滞。"}
+{"chunk_id":"plc_alarm_001","equipment":"Industrial PLC","category":"plc","text":"PLC-ALARM-001 表示 PLC 电源异常。应检查 PLC 电源模块、供电线路以及输入电压。"}
+{"chunk_id":"plc_alarm_002","equipment":"Industrial PLC","category":"plc","text":"PLC-ALARM-002 表示 PLC 输入输出模块异常。应检查 I/O 模块状态、接线情况以及模块通信指示灯。"}
+{"chunk_id":"plc_alarm_003","equipment":"Industrial PLC","category":"plc","text":"PLC-ALARM-003 表示 PLC 通信异常。发生该报警时，应检查工业网络连接、通信模块、交换机以及 PLC 网络参数。"}
+{"chunk_id":"network_disconnect","equipment":"Industrial Network","category":"network","text":"机器人控制系统出现网络连接中断时，应检查网线连接、工业交换机、电源状态、IP 地址配置以及网络通信模块。"}
+{"chunk_id":"daily_inspection","equipment":"ABB IRB6700","category":"maintenance","text":"机器人每天启动前，应检查机械臂外观、电缆连接、急停按钮、控制柜运行状态以及工作区域内是否存在障碍物。"}

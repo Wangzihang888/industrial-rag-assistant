@@ -1,0 +1,9 @@
+fastapi==0.141.1
+uvicorn==0.52.4
+openai==3.6.0
+qdrant-client==1.19.0
+rank-bm25==0.2.2
+jieba==0.42.1
+requests==2.34.2
+python-dotenv==1.2.3
+scikit-learn==1.9.0

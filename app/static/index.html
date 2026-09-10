@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Industrial RAG Assistant
+    </title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+            margin: 0;
+
+            font-family:
+                Inter,
+                "Microsoft YaHei",
+                Arial,
+                sans-serif;
+
+            background:
+                #f4f6f9;
+
+            color:
+                #1f2937;
+        }
+
+
+        .page {
+            width: 100%;
+            min-height: 100vh;
+        }
+
+
+        .header {
+            background:
+                #111827;
+
+            color:
+                white;
+
+            padding:
+                32px 20px;
+        }
+
+
+        .header-content {
+            max-width:
+                1000px;
+
+            margin:
+                0 auto;
+        }
+
+
+        .header h1 {
+            margin:
+                0;
+
+            font-size:
+                30px;
+
+            font-weight:
+                700;
+        }
+
+
+        .header-cn {
+            margin-top:
+                8px;
+
+            font-size:
+                18px;
+
+            color:
+                #d1d5db;
+        }
+
+
+        .tech-line {
+            margin-top:
+                14px;
+
+            font-size:
+                13px;
+
+            color:
+                #9ca3af;
+        }
+
+
+        .container {
+            max-width:
+                1000px;
+
+            margin:
+                32px auto;
+
+            padding:
+                0 20px 60px;
+        }
+
+
+        .card {
+            background:
+                white;
+
+            border:
+                1px solid #e5e7eb;
+
+            border-radius:
+                14px;
+
+            box-shadow:
+                0 4px 18px
+                rgba(0, 0, 0, 0.05);
+
+            padding:
+                24px;
+
+            margin-bottom:
+                22px;
+        }
+
+
+        .section-title {
+            margin:
+                0 0 16px;
+
+            font-size:
+                18px;
+
+            font-weight:
+                700;
+        }
+
+
+        .input-row {
+            display:
+                flex;
+
+            gap:
+                12px;
+        }
+
+
+        #queryInput {
+            flex:
+                1;
+
+            padding:
+                14px 16px;
+
+            border:
+                1px solid #d1d5db;
+
+            border-radius:
+                10px;
+
+            font-size:
+                16px;
+
+            outline:
+                none;
+
+            transition:
+                border-color 0.2s;
+        }
+
+
+        #queryInput:focus {
+            border-color:
+                #111827;
+        }
+
+
+        #sendButton {
+            min-width:
+                100px;
+
+            padding:
+                13px 22px;
+
+            border:
+                none;
+
+            border-radius:
+                10px;
+
+            background:
+                #111827;
+
+            color:
+                white;
+
+            font-size:
+                15px;
+
+            cursor:
+                pointer;
+
+            transition:
+                opacity 0.2s;
+        }
+
+
+        #sendButton:hover {
+            opacity:
+                0.88;
+        }
+
+
+        #sendButton:disabled {
+            opacity:
+                0.45;
+
+            cursor:
+                not-allowed;
+        }
+
+
+        .examples {
+            margin-top:
+                16px;
+
+            display:
+                flex;
+
+            flex-wrap:
+                wrap;
+
+            gap:
+                8px;
+        }
+
+
+        .example-button {
+            border:
+                1px solid #d1d5db;
+
+            background:
+                #f9fafb;
+
+            border-radius:
+                999px;
+
+            padding:
+                7px 12px;
+
+            font-size:
+                13px;
+
+            cursor:
+                pointer;
+
+            color:
+                #374151;
+        }
+
+
+        .example-button:hover {
+            background:
+                #f3f4f6;
+        }
+
+
+        #loadingText {
+            display:
+                none;
+
+            margin-top:
+                16px;
+
+            color:
+                #6b7280;
+
+            font-size:
+                14px;
+        }
+
+
+        .status-row {
+            display:
+                flex;
+
+            flex-wrap:
+                wrap;
+
+            align-items:
+                center;
+
+            gap:
+                12px;
+
+            margin-bottom:
+                18px;
+        }
+
+
+        .badge {
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            border-radius:
+                999px;
+
+            padding:
+                6px 11px;
+
+            font-size:
+                12px;
+
+            font-weight:
+                700;
+        }
+
+
+        .badge-accept {
+            background:
+                #dcfce7;
+
+            color:
+                #166534;
+        }
+
+
+        .badge-reject {
+            background:
+                #fee2e2;
+
+            color:
+                #991b1b;
+        }
+
+
+        .badge-idle {
+            background:
+                #e5e7eb;
+
+            color:
+                #4b5563;
+        }
+
+
+        .metric {
+            color:
+                #6b7280;
+
+            font-size:
+                13px;
+        }
+
+
+        #answerBox {
+            min-height:
+                80px;
+
+            padding:
+                18px;
+
+            border-radius:
+                10px;
+
+            background:
+                #f9fafb;
+
+            line-height:
+                1.8;
+
+            white-space:
+                pre-wrap;
+
+            word-break:
+                break-word;
+        }
+
+
+        .source-card {
+            border:
+                1px solid #e5e7eb;
+
+            border-radius:
+                10px;
+
+            padding:
+                16px;
+
+            margin-bottom:
+                14px;
+
+            background:
+                #fafafa;
+        }
+
+
+        .source-header {
+            display:
+                flex;
+
+            justify-content:
+                space-between;
+
+            align-items:
+                center;
+
+            gap:
+                12px;
+
+            margin-bottom:
+                12px;
+        }
+
+
+        .source-name {
+            font-weight:
+                700;
+        }
+
+
+        .source-score {
+            font-size:
+                12px;
+
+            color:
+                #6b7280;
+        }
+
+
+        .source-meta {
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(180px, 1fr)
+                );
+
+            gap:
+                8px;
+
+            margin-bottom:
+                12px;
+
+            font-size:
+                13px;
+
+            color:
+                #6b7280;
+        }
+
+
+        .source-text {
+            padding-top:
+                12px;
+
+            border-top:
+                1px solid #e5e7eb;
+
+            line-height:
+                1.7;
+
+            font-size:
+                14px;
+
+            white-space:
+                pre-wrap;
+
+            word-break:
+                break-word;
+        }
+
+
+        .empty {
+            color:
+                #9ca3af;
+
+            font-size:
+                14px;
+        }
+
+
+        .footer {
+            text-align:
+                center;
+
+            color:
+                #9ca3af;
+
+            font-size:
+                12px;
+
+            padding:
+                12px;
+        }
+
+
+        @media (
+            max-width: 700px
+        ) {
+
+            .input-row {
+                flex-direction:
+                    column;
+            }
+
+
+            #sendButton {
+                width:
+                    100%;
+            }
+
+
+            .header h1 {
+                font-size:
+                    25px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <div class="page">
+
+
+        <!-- =================================================
+             Header
+        ================================================== -->
+
+        <header class="header">
+
+            <div class="header-content">
+
+                <h1>
+                    Industrial RAG Assistant
+                </h1>
+
+                <div class="header-cn">
+                    工业设备智能运维知识库助手
+                </div>
+
+                <div class="tech-line">
+                    Dense Retrieval · BM25 · RRF ·
+                    Reranker · Evidence Gate · Qwen
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <main class="container">
+
+
+            <!-- =============================================
+                 Query
+            ============================================== -->
+
+            <section class="card">
+
+                <h2 class="section-title">
+                    知识库问答
+                </h2>
+
+
+                <div class="input-row">
+
+                    <input
+                        id="queryInput"
+                        type="text"
+                        placeholder="请输入设备故障或维护问题"
+                    >
+
+                    <button
+                        id="sendButton"
+                    >
+                        发送
+                    </button>
+
+                </div>
+
+
+                <div class="examples">
+
+                    <button
+                        class="example-button"
+                        data-query="E-103 是什么故障？"
+                    >
+                        E-103 是什么故障？
+                    </button>
+
+
+                    <button
+                        class="example-button"
+                        data-query="控制柜太热应该排查什么？"
+                    >
+                        控制柜过温
+                    </button>
+
+
+                    <button
+                        class="example-button"
+                        data-query="机器人运行时出现异常噪声应该检查哪些地方？"
+                    >
+                        运行异常噪声
+                    </button>
+
+
+                    <button
+                        class="example-button"
+                        data-query="ABB IRB6700 推荐使用哪个品牌的润滑油？"
+                    >
+                        测试拒答
+                    </button>
+
+                </div>
+
+
+                <div id="loadingText">
+                    正在检索知识库并生成回答...
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 Answer
+            ============================================== -->
+
+            <section class="card">
+
+                <h2 class="section-title">
+                    回答
+                </h2>
+
+
+                <div class="status-row">
+
+                    <span
+                        id="statusBadge"
+                        class="badge badge-idle"
+                    >
+                        WAITING
+                    </span>
+
+
+                    <span
+                        id="scoreText"
+                        class="metric"
+                    >
+                        Top1 Score: -
+                    </span>
+
+
+                    <span
+                        id="thresholdText"
+                        class="metric"
+                    >
+                        Threshold: -
+                    </span>
+
+                </div>
+
+
+                <div id="answerBox">
+                    请输入问题开始查询。
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 Sources
+            ============================================== -->
+
+            <section class="card">
+
+                <h2 class="section-title">
+                    参考来源
+                </h2>
+
+
+                <div id="sourcesBox">
+
+                    <div class="empty">
+                        暂无来源。
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+
+        <footer class="footer">
+            Industrial RAG Assistant
+        </footer>
+
+    </div>
+
+
+    <script>
+
+        // ====================================================
+        // 获取页面元素
+        // ====================================================
+
+        const queryInput =
+            document.getElementById(
+                "queryInput"
+            );
+
+
+        const sendButton =
+            document.getElementById(
+                "sendButton"
+            );
+
+
+        const loadingText =
+            document.getElementById(
+                "loadingText"
+            );
+
+
+        const statusBadge =
+            document.getElementById(
+                "statusBadge"
+            );
+
+
+        const scoreText =
+            document.getElementById(
+                "scoreText"
+            );
+
+
+        const thresholdText =
+            document.getElementById(
+                "thresholdText"
+            );
+
+
+        const answerBox =
+            document.getElementById(
+                "answerBox"
+            );
+
+
+        const sourcesBox =
+            document.getElementById(
+                "sourcesBox"
+            );
+
+
+        const exampleButtons =
+            document.querySelectorAll(
+                ".example-button"
+            );
+
+
+        // ====================================================
+        // 设置状态 Badge
+        // ====================================================
+
+        function setStatusBadge(
+            status
+        ) {
+
+            statusBadge.textContent =
+                status;
+
+
+            statusBadge.className =
+                "badge";
+
+
+            if (
+                status === "ACCEPT"
+            ) {
+
+                statusBadge.classList.add(
+                    "badge-accept"
+                );
+
+            } else if (
+                status === "REJECT"
+            ) {
+
+                statusBadge.classList.add(
+                    "badge-reject"
+                );
+
+            } else {
+
+                statusBadge.classList.add(
+                    "badge-idle"
+                );
+
+            }
+
+        }
+
+
+        // ====================================================
+        // 清空 Sources
+        // ====================================================
+
+        function clearSources(
+            message
+        ) {
+
+            sourcesBox.innerHTML =
+                "";
+
+
+            const empty =
+                document.createElement(
+                    "div"
+                );
+
+
+            empty.className =
+                "empty";
+
+
+            empty.textContent =
+                message;
+
+
+            sourcesBox.appendChild(
+                empty
+            );
+
+        }
+
+
+        // ====================================================
+        // 渲染 Sources
+        // ====================================================
+
+        function renderSources(
+            sources
+        ) {
+
+            sourcesBox.innerHTML =
+                "";
+
+
+            if (
+                !sources
+                ||
+                sources.length === 0
+            ) {
+
+                clearSources(
+                    "暂无来源。"
+                );
+
+                return;
+            }
+
+
+            for (
+                const source
+                of sources
+            ) {
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                card.className =
+                    "source-card";
+
+
+                // --------------------------------------------
+                // Source Header
+                // --------------------------------------------
+
+                const header =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                header.className =
+                    "source-header";
+
+
+                const name =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                name.className =
+                    "source-name";
+
+
+                name.textContent =
+                    (
+                        "[Source "
+                        + source.source_number
+                        + "] "
+                        + source.chunk_id
+                    );
+
+
+                const score =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                score.className =
+                    "source-score";
+
+
+                score.textContent =
+                    (
+                        "Rerank Score: "
+                        + Number(
+                            source.rerank_score
+                        ).toFixed(4)
+                    );
+
+
+                header.appendChild(
+                    name
+                );
+
+
+                header.appendChild(
+                    score
+                );
+
+
+                // --------------------------------------------
+                // Metadata
+                // --------------------------------------------
+
+                const meta =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                meta.className =
+                    "source-meta";
+
+
+                const sourceMeta =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                sourceMeta.textContent =
+                    (
+                        "Source: "
+                        + source.source
+                    );
+
+
+                const equipmentMeta =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                equipmentMeta.textContent =
+                    (
+                        "Equipment: "
+                        + source.equipment
+                    );
+
+
+                const categoryMeta =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                categoryMeta.textContent =
+                    (
+                        "Category: "
+                        + source.category
+                    );
+
+
+                meta.appendChild(
+                    sourceMeta
+                );
+
+
+                meta.appendChild(
+                    equipmentMeta
+                );
+
+
+                meta.appendChild(
+                    categoryMeta
+                );
+
+
+                // --------------------------------------------
+                // 原始证据
+                // --------------------------------------------
+
+                const text =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                text.className =
+                    "source-text";
+
+
+                text.textContent =
+                    source.text;
+
+
+                // --------------------------------------------
+                // 组装 Source Card
+                // --------------------------------------------
+
+                card.appendChild(
+                    header
+                );
+
+
+                card.appendChild(
+                    meta
+                );
+
+
+                card.appendChild(
+                    text
+                );
+
+
+                sourcesBox.appendChild(
+                    card
+                );
+
+            }
+
+        }
+
+
+        // ====================================================
+        // 请求 RAG API
+        // ====================================================
+
+        async function sendQuery() {
+
+            const query =
+                queryInput.value.trim();
+
+
+            // ------------------------------------------------
+            // 空输入
+            // ------------------------------------------------
+
+            if (!query) {
+
+                setStatusBadge(
+                    "WAITING"
+                );
+
+
+                answerBox.textContent =
+                    "请输入问题。";
+
+
+                return;
+            }
+
+
+            // ------------------------------------------------
+            // 请求开始
+            // ------------------------------------------------
+
+            sendButton.disabled =
+                true;
+
+
+            loadingText.style.display =
+                "block";
+
+
+            setStatusBadge(
+                "RUNNING"
+            );
+
+
+            scoreText.textContent =
+                "Top1 Score: -";
+
+
+            thresholdText.textContent =
+                "Threshold: -";
+
+
+            answerBox.textContent =
+                "正在处理请求...";
+
+
+            clearSources(
+                "正在检索来源..."
+            );
+
+
+            try {
+
+                // ============================================
+                // 调用 FastAPI
+                // ============================================
+
+                const response =
+                    await fetch(
+                        "/api/chat",
+                        {
+
+                            method:
+                                "POST",
+
+                            headers: {
+
+                                "Content-Type":
+                                    "application/json"
+
+                            },
+
+                            body:
+                                JSON.stringify(
+                                    {
+                                        query:
+                                            query
+                                    }
+                                )
+
+                        }
+                    );
+
+
+                // ============================================
+                // HTTP Response → JSON
+                // ============================================
+
+                const data =
+                    await response.json();
+
+
+                // ============================================
+                // HTTP Error
+                // ============================================
+
+                if (
+                    !response.ok
+                ) {
+
+                    setStatusBadge(
+                        "ERROR"
+                    );
+
+
+                    answerBox.textContent =
+                        (
+                            data.message
+                            ||
+                            "服务发生异常。"
+                        );
+
+
+                    clearSources(
+                        "请求失败，没有可显示的来源。"
+                    );
+
+
+                    return;
+                }
+
+
+                // ============================================
+                // 正常结果
+                // ============================================
+
+                setStatusBadge(
+                    data.status
+                );
+
+
+                scoreText.textContent =
+                    (
+                        "Top1 Score: "
+                        + Number(
+                            data.top1_score
+                        ).toFixed(4)
+                    );
+
+
+                thresholdText.textContent =
+                    (
+                        "Threshold: "
+                        + Number(
+                            data.threshold
+                        ).toFixed(4)
+                    );
+
+
+                answerBox.textContent =
+                    data.answer;
+
+
+                renderSources(
+                    data.sources
+                );
+
+
+            } catch (
+                error
+            ) {
+
+                // ============================================
+                // 浏览器网络异常
+                // ============================================
+
+                setStatusBadge(
+                    "ERROR"
+                );
+
+
+                answerBox.textContent =
+                    "无法连接后端服务。";
+
+
+                clearSources(
+                    "网络请求失败。"
+                );
+
+
+                console.error(
+                    error
+                );
+
+
+            } finally {
+
+                // ============================================
+                // 无论成功还是失败都执行
+                // ============================================
+
+                sendButton.disabled =
+                    false;
+
+
+                loadingText.style.display =
+                    "none";
+
+            }
+
+        }
+
+
+        // ====================================================
+        // 点击发送
+        // ====================================================
+
+        sendButton.addEventListener(
+            "click",
+            sendQuery
+        );
+
+
+        // ====================================================
+        // Enter 发送
+        // ====================================================
+
+        queryInput.addEventListener(
+            "keydown",
+
+            function (
+                event
+            ) {
+
+                if (
+                    event.key
+                    ===
+                    "Enter"
+                ) {
+
+                    sendQuery();
+
+                }
+
+            }
+        );
+
+
+        // ====================================================
+        // 示例问题
+        // ====================================================
+
+        for (
+            const button
+            of exampleButtons
+        ) {
+
+            button.addEventListener(
+                "click",
+
+                function () {
+
+                    const query =
+                        button.dataset.query;
+
+
+                    queryInput.value =
+                        query;
+
+
+                    sendQuery();
+
+                }
+            );
+
+        }
+
+    </script>
+
+</body>
+
+</html>
