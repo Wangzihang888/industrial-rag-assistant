@@ -41,7 +41,7 @@ RERANK_MODEL = (
 
 LLM_MODEL = os.getenv(
     "DASHSCOPE_CHAT_MODEL",
-    "qwen-plus",
+    "qwen3.7-plus",
 )
 
 
